@@ -2,7 +2,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import css from "./MovieList.module.css";
 
-// eslint-disable-next-line react/prop-types
 const MovieList = ({ movies }) => {
   const location = useLocation();
 
