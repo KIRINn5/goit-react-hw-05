@@ -1,0 +1,19 @@
+body {
+  background-color: #fafafa;
+  font-family: "Montserrat", sans-serif;
+  font-style: none;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #111111;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
