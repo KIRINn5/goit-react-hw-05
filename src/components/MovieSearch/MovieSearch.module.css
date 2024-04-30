@@ -1,0 +1,43 @@
+.moviesearch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  /* justify-content: center; */
+  margin-bottom: 20px;
+  top: 60px;
+  left: 20px;
+  list-style: none;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-right: 8px;
+  width: 350px;
+}
+
+.button {
+  padding: 10px;
+  background-color: #99ffa3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.searchContainer {
+  margin-bottom: 20px;
+}
+
+.error {
+  background-color: red;
+}

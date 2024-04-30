@@ -1,0 +1,47 @@
+.button {
+  padding: 10px;
+  background-color: #99ffa3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  position: absolute;
+  top: 60px;
+  left: 20px;
+}
+
+.title {
+  font-size: 2em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.movieInfo {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.movieDetails {
+  margin-left: 20px;
+}
+
+.toggle {
+  cursor: pointer;
+  color: blue;
+}
+
+.toggle:hover {
+  text-decoration: underline;
+}
