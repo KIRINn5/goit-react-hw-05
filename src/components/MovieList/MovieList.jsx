@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import styles from "./MovieList.module.css";
 import { Link, useLocation } from "react-router-dom";
+// eslint-disable-next-line react/prop-types
 function MovieList({ movies }) {
   const location = useLocation();
   return (

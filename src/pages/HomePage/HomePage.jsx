@@ -3,6 +3,7 @@ import MovieList from "../../components/MovieList/MovieList";
 import axios from "axios";
 import styles from "./HomePage.module.css";
 
+// eslint-disable-next-line react/prop-types
 const HomePage = ({ apiKey }) => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [error, setError] = useState(null);

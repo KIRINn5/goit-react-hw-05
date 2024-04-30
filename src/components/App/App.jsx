@@ -3,7 +3,9 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
+// eslint-disable-next-line no-unused-vars
 import MovieCast from "../MovieCast/MovieCast";
+// eslint-disable-next-line no-unused-vars
 import MovieReviews from "../MovieReviews/MovieReviews";
 
 import "./App.css";
