@@ -12,6 +12,7 @@ const MovieReviews = () => {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
         const response = await axios.get(url);
         setReviews(response.data.cast);
+        setReviews(response.data.cast);
       } catch (error) {
         console.error("Error fetching movie cast:", error.message);
       }
