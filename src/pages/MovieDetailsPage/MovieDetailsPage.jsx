@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, Outlet, useLocation } from "react-router-dom";
 import styles from "./MovieDetailsPage.module.css";
+import { useSearchParams } from "react-router-dom";
 import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
 
 const MovieDetailsPage = () => {
@@ -13,10 +14,9 @@ const MovieDetailsPage = () => {
   const [error, setError] = useState(null);
   const [castVisible, setCastVisible] = useState(false);
   const [reviewsVisible, setReviewsVisible] = useState(false);
-
-  const navigate = useNavigate();
-  const { movieId } = useParams();
   const prevLocation = useRef(null);
+  const location = useLocation();
+  const searchParams = useSearchParams();
 
   const toggleCast = () => {
     setCastVisible(!castVisible);
@@ -25,6 +25,8 @@ const MovieDetailsPage = () => {
   const toggleReviews = () => {
     setReviewsVisible(!reviewsVisible);
   };
+
+  const movieId = useParams().movieId;
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -41,7 +43,8 @@ const MovieDetailsPage = () => {
         setError(error.message);
       }
     };
-    const fecthMovieReviews = async () => {
+
+    const fetchMovieReviews = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
 
@@ -56,7 +59,8 @@ const MovieDetailsPage = () => {
         setError(error.message);
       }
     };
-    const fecthMovieCast = async () => {
+
+    const fetchMovieCast = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
@@ -72,17 +76,19 @@ const MovieDetailsPage = () => {
       }
     };
 
-    prevLocation.current = window.location.pathname;
+    prevLocation.current = location.pathname;
     fetchMovieDetails();
-    fecthMovieCast();
-    fecthMovieReviews();
-  }, [movieId]);
+    fetchMovieReviews();
+    fetchMovieCast();
+  }, [movieId, location]);
+
   const goBack = () => {
-    navigate(prevLocation.current);
+    searchParams.delete("movieId");
   };
+
   return (
     <div>
-      {!movieDetails ? ( // обработка если данные еще загружаются
+      {!movieDetails ? (
         <div>Loading...</div>
       ) : (
         <div className={styles.container}>
@@ -114,7 +120,9 @@ const MovieDetailsPage = () => {
           </div>
         </div>
       )}
+      <Outlet />
     </div>
   );
 };
+
 export default MovieDetailsPage;
