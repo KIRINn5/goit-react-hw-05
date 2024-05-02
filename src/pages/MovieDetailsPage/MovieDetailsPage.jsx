@@ -1,22 +1,23 @@
 import { useState, useEffect, useRef } from "react";
+import { useParams, Outlet, useLocation } from "react-router-dom";
+import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-import { useParams, Outlet, useLocation } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import styles from "./MovieDetailsPage.module.css";
-import { useSearchParams } from "react-router-dom";
-import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
 
 const MovieDetailsPage = () => {
-  const [movieDetails, setMovieDetails] = useState({});
+  const [movieDetails, setMovieDetails] = useState(null);
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
   const [castVisible, setCastVisible] = useState(false);
   const [reviewsVisible, setReviewsVisible] = useState(false);
-  const prevLocation = useRef(null); // Змінив значення з null на null
+  const prevLocation = useRef(null);
   const location = useLocation();
-  const searchParams = useSearchParams();
+  const { movieId } = useParams();
 
   const toggleCast = () => {
     setCastVisible(!castVisible);
@@ -25,8 +26,6 @@ const MovieDetailsPage = () => {
   const toggleReviews = () => {
     setReviewsVisible(!reviewsVisible);
   };
-
-  const movieId = useParams().movieId;
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -47,7 +46,6 @@ const MovieDetailsPage = () => {
     const fetchMovieReviews = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
-
         const options = {
           headers: {
             Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
@@ -63,7 +61,6 @@ const MovieDetailsPage = () => {
     const fetchMovieCast = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
-
         const options = {
           headers: {
             Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
@@ -76,28 +73,26 @@ const MovieDetailsPage = () => {
       }
     };
 
-    // Оновлюємо prevLocation.current замість location.pathname
     prevLocation.current = location.state;
     fetchMovieDetails();
     fetchMovieReviews();
     fetchMovieCast();
-  }, [movieId, location]);
+  }, [movieId, location.state]);
 
   useEffect(() => {
-    // Оновлюємо useEffect, щоб він спрацьовував при зміні prevLocation.current
     if (prevLocation.current !== location.state) {
-      // Дії, які виконуються при зміні розташування
+      // Виконується, коли змінюється розташування
     }
-  }, [location.state]); // Оновлюємо useEffect зміни prevLocation.current
+  }, [location.state]);
 
   const goBack = () => {
-    searchParams.delete("movieId");
+    // Редагуємо розташування, щоб повернутися назад
   };
 
   return (
     <div>
       {!movieDetails ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         <div className={styles.container}>
           <button onClick={goBack} className={styles.button}>
@@ -113,7 +108,7 @@ const MovieDetailsPage = () => {
               <p>{movieDetails.overview}</p>
             </div>
           </div>
-          {error && <div>Error: {error}</div>}
+          {error && <ErrorMessage />}
           <div>
             <h2 onClick={toggleCast} className={styles.toggle}>
               Cast
