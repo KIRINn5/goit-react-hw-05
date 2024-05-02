@@ -1,71 +1,102 @@
-import { useState, useEffect } from "react";
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import axios from "axios";
-import MovieList from "../../components/MovieList/MovieList";
-import MovieSearch from "../../components/MovieSearch/MovieSearch";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import MovieList from "../../components/MovieList/MovieList";
+import toast, { Toaster } from "react-hot-toast";
+
+const notify = () =>
+  toast("This field cannot be empty. Please enter a search query", {
+    duration: 4000,
+    position: "top-left",
+    style: {
+      borderRadius: "10px",
+      background: "#333",
+      color: "#fff",
+    },
+  });
+
+const message = () =>
+  toast("There are no movies. Please enter another request", {
+    duration: 4000,
+    position: "top-left",
+    style: {
+      borderRadius: "10px",
+      background: "#387ce1",
+      color: "#fff",
+    },
+  });
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  // Деструктуризуємо результат useSearchParams
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        setLoading(true);
+        setIsError(false);
+        setIsLoading(true);
         const url = `https://api.themoviedb.org/3/discover/movie`;
         const params = {
-          api_key: "API_READ_ACCESS_TOKEN",
+          api_key: API_READ_ACCESS_TOKEN,
           language: "en-US",
           sort_by: "popularity.desc",
           include_adult: false,
           page: 1,
         };
 
-        // Оновлюємо параметри пошуку перед викликом API
         if (searchParams.has("search")) {
           params.query = searchParams.get("search");
         }
 
         const response = await axios.get(url, { params });
         setMovies(response.data.results);
-        setLoading(false);
+        if (response.data.total_results === 0) {
+          message();
+        }
       } catch (error) {
-        setError(error.message);
-        setLoading(false);
+        console.log("error: ", error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchMovies();
-  }, [searchParams]); // Викликаємо ефект, коли змінюються параметри пошуку
+  }, [searchParams]);
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault();
-    // Встановлюємо новий параметр пошуку
-    setSearchParams({ search: searchTerm });
+  const handleSubmit = (value) => {
+    if (!value.query.trim()) return notify();
+    if (searchTerm === value.query) return;
+    setSearchParams({ search: value.query });
   };
 
   return (
-    <div>
-      <h1>Movies</h1>
-      {error && <div>Error: {error}</div>}
-      <MovieSearch
-        // eslint-disable-next-line no-undef
-        apiKey={API_READ_ACCESS_TOKEN}
-        searchTerm={searchTerm}
-        onSearchChange={handleSearchChange}
-        onSearchSubmit={handleSearchSubmit}
-      />
-      {loading ? <div>Loading...</div> : <MovieList movies={movies} />}
-    </div>
+    <>
+      <Formik initialValues={{ query: "" }} onSubmit={handleSubmit}>
+        <Form>
+          <label>
+            <Field
+              type="text"
+              name="query"
+              autoComplete="off"
+              autoFocus
+              placeholder="Search movie..."
+            />
+          </label>
+          <button type="submit">Search</button>
+          <Toaster />
+        </Form>
+      </Formik>
+      {movies && <MovieList movies={movies} />}
+      {isError && <ErrorMessage />}
+      {isLoading && <Loader />}
+    </>
   );
 };
 
