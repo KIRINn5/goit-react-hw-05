@@ -1,4 +1,5 @@
-import { lazy, Suspense } from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 import "./App.css";
@@ -18,14 +19,10 @@ function App() {
       <Navigation />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route key="home" exact path="/" element={<HomePage />} />
-          <Route key="movies" path="/movies" element={<MoviesPage />} />
-          <Route
-            key="movie-details"
-            path="/movies/:movieId"
-            element={<MovieDetailsPage />}
-          />
-          <Route key="not-found" path="*" element={<NotFoundPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/movies/:movieId" element={<MovieDetailsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </div>

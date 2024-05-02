@@ -1,2 +1,14 @@
-const API_READ_ACCESS_TOKEN = `eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYzI2MTIwMTg2M2E3MzFjMGQzYjQ0NjUzNmFiOTJlNCIsInN1YiI6IjY2MjY2ZWVjNjNkOTM3MDE2NDcyY2NhMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.dR7Dw3g5Qkc088USoX9C-iGwXqqqGlYZUK41l8ncHME`;
-export { API_READ_ACCESS_TOKEN };
+import axios from "axios";
+
+const instance = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  headers: {
+    // eslint-disable-next-line no-undef
+    Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
+  },
+});
+
+instance
+  .get("/trending/movie/day?language=en-US")
+  .then((response) => {})
+  .catch((error) => {});
