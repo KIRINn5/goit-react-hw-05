@@ -85,7 +85,7 @@ const MovieDetailsPage = () => {
 
   useEffect(() => {
     if (prevLocation.current !== location.state) {
-      // Do something when location state changes
+      //
     }
   }, [location.state]);
 
