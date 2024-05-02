@@ -1,4 +1,4 @@
-import { API_READ_ACCESS_TOKEN } from "../../components/API/API.jsx";
+import { API_READ_ACCESS_TOKEN } from "./API";
 import axios from "axios";
 
 const instance = axios.create({
