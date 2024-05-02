@@ -1,5 +1,7 @@
 import axios from "axios";
-import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
+
+const API_READ_ACCESS_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDc0OGRiNTVhMThjN2QxNzg1ODkzOTE0YjY1OWViNCIsInN1YiI6IjY2MGVlN2I4NWFhZGM0MDE0OTYzNTI1NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EwV41cGxMc2HGH9eWewv2gmR2sjoGuKP7LPcQkG3QtM";
 
 const instance = axios.create({
   baseURL: "https://api.themoviedb.org/3",
@@ -9,51 +11,26 @@ const instance = axios.create({
 });
 
 export const fetchHomePage = async () => {
-  try {
-    const response = await instance.get("/trending/movie/day?language=en-US");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching homepage:", error);
-    throw error;
-  }
+  const response = await instance.get("/trending/movie/day?language=en-US");
+  return response.data;
 };
 
 export const getMoviesPage = async (query) => {
-  try {
-    const response = await instance.get(`/search/movie?query=${query}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movies page:", error);
-    throw error;
-  }
+  const response = await instance.get(`/search/movie?query=${query}`);
+  return response.data;
 };
 
 export const getMovieDetails = async (id) => {
-  try {
-    const response = await instance.get(`/movie/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movie details:", error);
-    throw error;
-  }
+  const response = await instance.get(`/movie/${id}`);
+  return response.data;
 };
 
 export const getMovieReviews = async (id) => {
-  try {
-    const response = await instance.get(`/movie/${id}/reviews`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movie reviews:", error);
-    throw error;
-  }
+  const response = await instance.get(`/movie/${id}/reviews`);
+  return response.data;
 };
 
 export const getMovieCast = async (id) => {
-  try {
-    const response = await instance.get(`/movie/${id}/credits`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching movie cast:", error);
-    throw error;
-  }
+  const response = await instance.get(`/movie/${id}/credits`);
+  return response.data;
 };
