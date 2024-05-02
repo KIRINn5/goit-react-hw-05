@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-import { useParams, Outlet, useLocation } from "react-router-dom";
-import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
+// eslint-disable-next-line no-unused-vars
+import { useState, useEffect, useRef, Suspense, lazy } from "react";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-import Loader from "../../components/Loader/Loader";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import styles from "./MovieDetailsPage.module.css";
+// eslint-disable-next-line no-unused-vars
+import { useParams, Outlet, useLocation, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
 
 const MovieDetailsPage = () => {
-  const [movieDetails, setMovieDetails] = useState(null);
+  const [movieDetails, setMovieDetails] = useState({});
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
@@ -17,7 +17,7 @@ const MovieDetailsPage = () => {
   const [reviewsVisible, setReviewsVisible] = useState(false);
   const prevLocation = useRef(null);
   const location = useLocation();
-  const { movieId } = useParams();
+  const searchParams = useSearchParams();
 
   const toggleCast = () => {
     setCastVisible(!castVisible);
@@ -26,6 +26,8 @@ const MovieDetailsPage = () => {
   const toggleReviews = () => {
     setReviewsVisible(!reviewsVisible);
   };
+
+  const movieId = useParams().movieId;
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -46,6 +48,7 @@ const MovieDetailsPage = () => {
     const fetchMovieReviews = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
+
         const options = {
           headers: {
             Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
@@ -61,6 +64,7 @@ const MovieDetailsPage = () => {
     const fetchMovieCast = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+
         const options = {
           headers: {
             Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
@@ -77,48 +81,42 @@ const MovieDetailsPage = () => {
     fetchMovieDetails();
     fetchMovieReviews();
     fetchMovieCast();
-  }, [movieId, location.state]);
+  }, [movieId, location]);
 
   useEffect(() => {
     if (prevLocation.current !== location.state) {
-      // Виконується, коли змінюється розташування
+      // Do something when location state changes
     }
   }, [location.state]);
 
   const goBack = () => {
-    // Редагуємо розташування, щоб повернутися назад
+    searchParams.delete("movieId");
   };
 
   return (
     <div>
       {!movieDetails ? (
-        <Loader />
+        <div>Loading...</div>
       ) : (
-        <div className={styles.container}>
-          <button onClick={goBack} className={styles.button}>
-            Go back
-          </button>
-          <div className={styles.movieInfo}>
+        <div>
+          <button onClick={goBack}>Go back</button>
+          <div>
             <img
               src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
               alt={movieDetails.title}
             />
-            <div className={styles.movieDetails}>
-              <h1 className={styles.title}>{movieDetails.title}</h1>
+            <div>
+              <h1>{movieDetails.title}</h1>
               <p>{movieDetails.overview}</p>
             </div>
           </div>
-          {error && <ErrorMessage />}
+          {error && <div>Error: {error}</div>}
           <div>
-            <h2 onClick={toggleCast} className={styles.toggle}>
-              Cast
-            </h2>
+            <h2 onClick={toggleCast}>Cast</h2>
             {castVisible && <MovieCast cast={cast} />}
           </div>
           <div>
-            <h2 onClick={toggleReviews} className={styles.toggle}>
-              Reviews
-            </h2>
+            <h2 onClick={toggleReviews}>Reviews</h2>
             {reviewsVisible && <MovieReviews reviews={reviews} />}
           </div>
         </div>
