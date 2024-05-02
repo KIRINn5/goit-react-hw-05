@@ -1,12 +1,12 @@
+/* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
-import { useState, useEffect, useRef, Suspense, lazy } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
 // eslint-disable-next-line no-unused-vars
-import { useParams, Outlet, useLocation, Link } from "react-router-dom";
+import { useParams, Outlet, useLocation } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
-import { API_READ_ACCESS_TOKEN } from "../../components/API/API";
 
 const MovieDetailsPage = () => {
   const [movieDetails, setMovieDetails] = useState({});
