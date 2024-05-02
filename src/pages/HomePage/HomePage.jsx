@@ -12,7 +12,7 @@ const HomePage = ({ apiKey }) => {
       try {
         const url = "https://api.themoviedb.org/3/trending/movie/day";
         const params = {
-          api_key: apiKey,
+          api_key: "8aba4e3419a44727b7eb66f35fce4fa2",
           include_adult: false,
           language: "en-US",
           page: 1,
