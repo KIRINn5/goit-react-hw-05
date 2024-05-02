@@ -14,7 +14,7 @@ const MovieDetailsPage = () => {
   const [error, setError] = useState(null);
   const [castVisible, setCastVisible] = useState(false);
   const [reviewsVisible, setReviewsVisible] = useState(false);
-  const prevLocation = useRef(null);
+  const prevLocation = useRef(null); // Змінив значення з null на null
   const location = useLocation();
   const searchParams = useSearchParams();
 
@@ -76,11 +76,19 @@ const MovieDetailsPage = () => {
       }
     };
 
-    prevLocation.current = location.pathname;
+    // Оновлюємо prevLocation.current замість location.pathname
+    prevLocation.current = location.state;
     fetchMovieDetails();
     fetchMovieReviews();
     fetchMovieCast();
   }, [movieId, location]);
+
+  useEffect(() => {
+    // Оновлюємо useEffect, щоб він спрацьовував при зміні prevLocation.current
+    if (prevLocation.current !== location.state) {
+      // Дії, які виконуються при зміні розташування
+    }
+  }, [location.state]); // Оновлюємо useEffect зміни prevLocation.current
 
   const goBack = () => {
     searchParams.delete("movieId");

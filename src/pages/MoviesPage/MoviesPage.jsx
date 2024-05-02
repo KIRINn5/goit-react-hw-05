@@ -10,7 +10,8 @@ const MoviesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const searchParams = useSearchParams();
+  // Деструктуризуємо результат useSearchParams
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -24,6 +25,12 @@ const MoviesPage = () => {
           include_adult: false,
           page: 1,
         };
+
+        // Оновлюємо параметри пошуку перед викликом API
+        if (searchParams.has("search")) {
+          params.query = searchParams.get("search");
+        }
+
         const response = await axios.get(url, { params });
         setMovies(response.data.results);
         setLoading(false);
@@ -34,7 +41,7 @@ const MoviesPage = () => {
     };
 
     fetchMovies();
-  }, [searchParams]);
+  }, [searchParams]); // Викликаємо ефект, коли змінюються параметри пошуку
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -42,7 +49,8 @@ const MoviesPage = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    searchParams.set("search", searchTerm);
+    // Встановлюємо новий параметр пошуку
+    setSearchParams({ search: searchTerm });
   };
 
   return (
