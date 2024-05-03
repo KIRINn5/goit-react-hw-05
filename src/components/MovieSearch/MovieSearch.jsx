@@ -8,26 +8,28 @@ const MovieSearch = () => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState(null);
+
   const handleSearch = async () => {
     try {
       const url = `https://api.themoviedb.org/3/search/movie`;
       const params = {
-        api_key: `${API_READ_ACCESS_TOKEN}`,
+        api_key: API_READ_ACCESS_TOKEN,
         include_adult: false,
         language: "en-US",
         page: 1,
         query: query,
       };
-      const respons = await axios.get(url, {
+      const response = await axios.get(url, {
         params,
         headers: { Authorization: `Bearer ${API_READ_ACCESS_TOKEN}` },
       });
-      setSearchResults(respons.data.results);
+      setSearchResults(response.data.results);
       setError(null);
     } catch (error) {
       setError(error.message);
     }
   };
+
   return (
     <div className={styles.moviesearch}>
       <h1></h1>
@@ -48,4 +50,5 @@ const MovieSearch = () => {
     </div>
   );
 };
+
 export default MovieSearch;

@@ -1,11 +1,8 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 import MovieList from "../../components/MovieList/MovieList";
+import { Formik, Field, Form } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 
 const notify = () =>
@@ -32,53 +29,43 @@ const message = () =>
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setIsError(false);
-        setIsLoading(true);
-        const url = `https://api.themoviedb.org/3/discover/movie`;
-        const params = {
-          api_key: API_READ_ACCESS_TOKEN,
-          language: "en-US",
-          sort_by: "popularity.desc",
-          include_adult: false,
-          page: 1,
-        };
-
-        if (searchParams.has("search")) {
-          params.query = searchParams.get("search");
-        }
-
-        const response = await axios.get(url, { params });
-        setMovies(response.data.results);
-        if (response.data.total_results === 0) {
-          message();
-        }
-      } catch (error) {
-        console.log("error: ", error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
+  const handleSubmit = async (values) => {
+    const { query } = values;
+    if (!query.trim()) {
+      notify();
+      return;
+    }
+    try {
+      setLoading(true);
+      const url = `https://api.themoviedb.org/3/search/movie`;
+      const params = {
+        // eslint-disable-next-line no-undef
+        api_key: API_READ_ACCESS_TOKEN,
+        include_adult: false,
+        language: "en-US",
+        page: 1,
+        query: query,
+      };
+      const response = await axios.get(url, { params });
+      setMovies(response.data.results);
+      if (response.data.results.length === 0) {
+        message();
       }
-    };
-
-    fetchMovies();
-  }, [searchParams]);
-
-  const handleSubmit = (value) => {
-    if (!value.query.trim()) return notify();
-    if (searchTerm === value.query) return;
-    setSearchParams({ search: value.query });
+      setLoading(false);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      setError("Error fetching movies");
+      setLoading(false);
+    }
   };
 
   return (
-    <>
+    <div>
+      <h1>Movies</h1>
       <Formik initialValues={{ query: "" }} onSubmit={handleSubmit}>
         <Form>
           <label>
@@ -94,10 +81,9 @@ const MoviesPage = () => {
           <Toaster />
         </Form>
       </Formik>
-      {movies && <MovieList movies={movies} />}
-      {isError && <ErrorMessage />}
-      {isLoading && <Loader />}
-    </>
+      {loading ? <div>Loading...</div> : <MovieList movies={movies} />}
+      {error && <div>Error: {error}</div>}
+    </div>
   );
 };
 
