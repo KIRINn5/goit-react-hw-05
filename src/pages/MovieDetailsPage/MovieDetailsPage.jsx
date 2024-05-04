@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense, lazy } from "react";
+import { useParams, useLocation, Link, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import Loader from "../../components/Loader/Loader";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-import { useParams, Outlet, useLocation, Link } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import css from "./MovieDetailsPage.module.css";
 
 const MovieDetailsPage = () => {
@@ -19,24 +18,14 @@ const MovieDetailsPage = () => {
   const prevLocation = useRef(null);
   const { movieId } = useParams();
   const location = useLocation();
-
-  // eslint-disable-next-line no-unused-vars
-  const toggleCast = () => {
-    setCastVisible(!castVisible);
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const toggleReviews = () => {
-    setReviewsVisible(!reviewsVisible);
-  };
+  const backLink = useRef(location.state ?? "/");
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       setIsLoading(true);
       try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}`;
-        const response = await axios.get(url);
-        setMovieDetails(response.data);
+        const response = await getMovieDetails(movieId);
+        setMovieDetails(response);
         setIsError(false);
       } catch (error) {
         setIsError(true);
@@ -79,7 +68,7 @@ const MovieDetailsPage = () => {
         <>
           {movieDetails && (
             <>
-              <Link to={prevLocation.current || "/"}>⬅ Go Back</Link>
+              <Link to={backLink.current}>⬅ Go Back</Link>
               <div>
                 <h1>{movieDetails.original_title} </h1>
                 <img
@@ -113,7 +102,6 @@ const MovieDetailsPage = () => {
           )}
         </>
       )}
-      <Outlet />
     </>
   );
 };
