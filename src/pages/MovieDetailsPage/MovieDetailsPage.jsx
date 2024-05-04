@@ -1,10 +1,8 @@
 /* eslint-disable no-undef */
-// eslint-disable-next-line no-unused-vars
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-// eslint-disable-next-line no-unused-vars
 import { useParams, Outlet, useLocation } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
@@ -18,6 +16,7 @@ const MovieDetailsPage = () => {
   const prevLocation = useRef(null);
   const location = useLocation();
   const searchParams = useSearchParams();
+  const movieId = useParams().movieId;
 
   const toggleCast = () => {
     setCastVisible(!castVisible);
@@ -27,18 +26,11 @@ const MovieDetailsPage = () => {
     setReviewsVisible(!reviewsVisible);
   };
 
-  const movieId = useParams().movieId;
-
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}`;
-        const options = {
-          headers: {
-            Authorization: `${API_READ_ACCESS_TOKEN}`,
-          },
-        };
-        const response = await axios.get(url, options);
+        const response = await axios.get(url);
         setMovieDetails(response.data);
       } catch (error) {
         setError(error.message);
@@ -48,13 +40,7 @@ const MovieDetailsPage = () => {
     const fetchMovieReviews = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
-
-        const options = {
-          headers: {
-            Authorization: `${API_READ_ACCESS_TOKEN}`,
-          },
-        };
-        const response = await axios.get(url, options);
+        const response = await axios.get(url);
         setReviews(response.data.results);
       } catch (error) {
         setError(error.message);
@@ -64,13 +50,7 @@ const MovieDetailsPage = () => {
     const fetchMovieCast = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
-
-        const options = {
-          headers: {
-            Authorization: `${API_READ_ACCESS_TOKEN}`,
-          },
-        };
-        const response = await axios.get(url, options);
+        const response = await axios.get(url);
         setCast(response.data.cast);
       } catch (error) {
         setError(error.message);
@@ -85,7 +65,7 @@ const MovieDetailsPage = () => {
 
   useEffect(() => {
     if (prevLocation.current !== location.state) {
-      //
+      // handle location change if needed
     }
   }, [location.state]);
 
