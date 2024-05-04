@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef, Suspense, lazy } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useLocation, Link, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
-import MovieCast from "../../components/MovieCast/MovieCast";
-import MovieReviews from "../../components/MovieReviews/MovieReviews";
 import css from "./MovieDetailsPage.module.css";
 
 const MovieDetailsPage = () => {
@@ -13,8 +11,6 @@ const MovieDetailsPage = () => {
   const [isError, setIsError] = useState(false);
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [castVisible, setCastVisible] = useState(false);
-  const [reviewsVisible, setReviewsVisible] = useState(false);
   const prevLocation = useRef(null);
   const { movieId } = useParams();
   const location = useLocation();
@@ -24,8 +20,9 @@ const MovieDetailsPage = () => {
     const fetchMovieDetails = async () => {
       setIsLoading(true);
       try {
-        const response = await getMovieDetails(movieId);
-        setMovieDetails(response);
+        const url = `https://api.themoviedb.org/3/movie/${movieId}`;
+        const response = await axios.get(url);
+        setMovieDetails(response.data);
         setIsError(false);
       } catch (error) {
         setIsError(true);
