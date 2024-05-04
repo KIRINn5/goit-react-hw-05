@@ -35,7 +35,7 @@ const MovieDetailsPage = () => {
         const url = `https://api.themoviedb.org/3/movie/${movieId}`;
         const options = {
           headers: {
-            Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
+            Authorization: `${API_READ_ACCESS_TOKEN}`,
           },
         };
         const response = await axios.get(url, options);
@@ -51,7 +51,7 @@ const MovieDetailsPage = () => {
 
         const options = {
           headers: {
-            Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
+            Authorization: `${API_READ_ACCESS_TOKEN}`,
           },
         };
         const response = await axios.get(url, options);
@@ -67,7 +67,7 @@ const MovieDetailsPage = () => {
 
         const options = {
           headers: {
-            Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
+            Authorization: `${API_READ_ACCESS_TOKEN}`,
           },
         };
         const response = await axios.get(url, options);

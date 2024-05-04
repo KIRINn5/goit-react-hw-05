@@ -21,7 +21,7 @@ const MovieSearch = () => {
       };
       const response = await axios.get(url, {
         params,
-        headers: { Authorization: `Bearer ${API_READ_ACCESS_TOKEN}` },
+        headers: { Authorization: `${API_READ_ACCESS_TOKEN}` },
       });
       setSearchResults(response.data.results);
       setError(null);

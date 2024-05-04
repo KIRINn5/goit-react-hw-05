@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { getMoviesPage } from "../../components/API/API";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
-import MovieList from "../components/MovieList/MovieList";
+import MovieList from "../../components/MovieList/MovieList";
 // eslint-disable-next-line no-unused-vars
 import toast, { Toaster } from "react-hot-toast";
 import { Formik, Field, Form } from "formik";
