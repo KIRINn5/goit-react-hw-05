@@ -24,8 +24,7 @@ const MovieDetailsPage = () => {
         setIsError(false);
         setIsLoading(true);
 
-        const apiKey =
-          "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDc0OGRiNTVhMThjN2QxNzg1ODkzOTE0YjY1OWViNCIsInN1YiI6IjY2MGVlN2I4NWFhZGM0MDE0OTYzNTI1NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EwV41cGxMc2HGH9eWewv2gmR2sjoGuKP7LPcQkG3QtM";
+        const apiKey = "54748db55a18c7d1785893914b659eb4";
         const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
 
         const response = await axios.get(url);
