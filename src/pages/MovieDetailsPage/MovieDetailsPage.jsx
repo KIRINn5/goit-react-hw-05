@@ -1,6 +1,6 @@
-import { useState, useEffect, Suspense, lazy } from "react";
+import { useState, useEffect, Suspense, lazy, useRef } from "react";
 import { useParams, useLocation, Link, Routes, Route } from "react-router-dom";
-import { getMovieDetails } from "../../API/API";
+import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
 import css from "./MovieDetailsPage.module.css";
@@ -19,18 +19,24 @@ const MovieDetailsPage = () => {
   const backLink = useRef(location.state ?? "/");
 
   useEffect(() => {
-    async function fetchMovieDetails() {
+    const fetchMovieDetails = async () => {
       try {
         setIsError(false);
         setIsLoading(true);
-        const response = await getMovieDetails(movieId);
-        setMovieDetails(() => response);
+
+        const apiKey =
+          "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDc0OGRiNTVhMThjN2QxNzg1ODkzOTE0YjY1OWViNCIsInN1YiI6IjY2MGVlN2I4NWFhZGM0MDE0OTYzNTI1NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EwV41cGxMc2HGH9eWewv2gmR2sjoGuKP7LPcQkG3QtM";
+        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
+
+        const response = await axios.get(url);
+        setMovieDetails(response.data);
       } catch (error) {
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
-    }
+    };
+
     fetchMovieDetails();
   }, [movieId]);
 
