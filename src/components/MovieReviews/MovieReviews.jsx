@@ -10,6 +10,7 @@ const MovieReviews = ({ apiKey }) => {
   useEffect(() => {
     const fetchMovieReviews = async () => {
       try {
+        const apiKey = "54748db55a18c7d1785893914b659eb4";
         const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}`;
         const response = await axios.get(url);
         setReviews(response.data.results);
