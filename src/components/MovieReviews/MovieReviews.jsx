@@ -3,22 +3,24 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./MovieReviews.module.css";
 
-const MovieReviews = () => {
+const MovieReviews = ({ apiKey }) => {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
+
   useEffect(() => {
     const fetchMovieReviews = async () => {
       try {
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
         const response = await axios.get(url);
         setReviews(response.data.cast);
-        setReviews(response.data.cast);
       } catch (error) {
         console.error("Error fetching movie cast:", error.message);
       }
     };
+
     fetchMovieReviews();
-  }, [movieId]);
+  }, [movieId, apiKey]);
+
   return (
     <div>
       {/* <h2>Reviews</h2> */}
@@ -37,4 +39,5 @@ const MovieReviews = () => {
     </div>
   );
 };
+
 export default MovieReviews;
