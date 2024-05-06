@@ -10,11 +10,11 @@ const MovieReviews = ({ apiKey }) => {
   useEffect(() => {
     const fetchMovieReviews = async () => {
       try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
+        const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}`;
         const response = await axios.get(url);
-        setReviews(response.data.cast);
+        setReviews(response.data.results);
       } catch (error) {
-        console.error("Error fetching movie cast:", error.message);
+        console.error("Error fetching movie reviews:", error.message);
       }
     };
 
@@ -23,9 +23,8 @@ const MovieReviews = ({ apiKey }) => {
 
   return (
     <div>
-      {/* <h2>Reviews</h2> */}
       {reviews && reviews.length > 0 ? (
-        <ul className={styles.reviews.list}>
+        <ul className={styles.reviewsList}>
           {reviews.map((review) => (
             <li key={review.id}>
               <h3>{review.author}</h3>
