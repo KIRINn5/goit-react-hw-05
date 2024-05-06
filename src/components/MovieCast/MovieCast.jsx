@@ -9,7 +9,8 @@ function MovieCast() {
   useEffect(() => {
     const fetchMovieCast = async () => {
       try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+        const apiKey = "54748db55a18c7d1785893914b659eb4";
+        const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
         const response = await axios.get(url);
         setCast(response.data.cast);
       } catch (error) {
