@@ -1,5 +1,12 @@
 import { useState, useEffect, Suspense, lazy, useRef } from "react";
-import { useParams, useLocation, Link, Routes, Route } from "react-router-dom";
+import {
+  useParams,
+  useLocation,
+  Link,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
@@ -65,12 +72,7 @@ const MovieDetailsPage = () => {
             <h4>Additional Information</h4>
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
-            <Suspense fallback={<Loader />}>
-              <Routes>
-                <Route path="cast" element={<MovieCast />} />
-                <Route path="reviews" element={<MovieReviews />} />
-              </Routes>
-            </Suspense>
+            <Outlet />
           </div>
         </>
       )}
