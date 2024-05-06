@@ -9,7 +9,7 @@ const MovieReviews = () => {
   useEffect(() => {
     const fetchMovieReviews = async () => {
       try {
-        const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
+        const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
         const response = await axios.get(url);
         setReviews(response.data.cast);
         setReviews(response.data.cast);
