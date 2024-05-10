@@ -50,7 +50,6 @@ const MovieDetailsPage = () => {
     <>
       {movieDetails && (
         <>
-          <Link to={backLink.current}>⬅ Go Back</Link>
           <div>
             <h1>{movieDetails.original_title} </h1>
             <img
@@ -73,6 +72,7 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
+            <Link to={backLink.current}>⬅ Go Back</Link>
           </div>
         </>
       )}
