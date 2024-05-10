@@ -1,5 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { useParams, useLocation, Link, Outlet } from "react-router-dom";
+import { useState, useEffect, Suspense, lazy, useRef } from "react";
+import {
+  useParams,
+  useLocation,
+  Link,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
@@ -66,7 +73,6 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
-            <Link to={backLink.current}>⬅ Go Back</Link>
           </div>
         </>
       )}
