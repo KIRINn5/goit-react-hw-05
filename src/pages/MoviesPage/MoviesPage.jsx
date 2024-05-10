@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { getMoviesPage } from "../../components/API/API";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
@@ -60,7 +60,6 @@ const MoviesPage = () => {
           <Toaster />
         </Form>
       </Formik>
-      <Link to="/">Go Back</Link>
       {movies && <MovieList movies={movies} />}
       {isError && <ErrorMessage />}
       {isLoading && <Loader />}
