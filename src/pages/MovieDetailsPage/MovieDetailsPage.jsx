@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  useParams,
-  useLocation,
-  Link,
-  Outlet,
-  useHistory,
-} from "react-router-dom";
+import { useParams, useLocation, Link, Outlet } from "react-router-dom";
+import { useHistory } from "react-router-dom"; // Import useHistory directly
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
@@ -22,7 +17,7 @@ const MovieDetailsPage = () => {
   const [isError, setIsError] = useState(false);
   const { movieId } = useParams();
   const location = useLocation();
-  const history = useHistory();
+  const history = useHistory(); // Use useHistory directly
   const backLink = useRef(location.state ?? "/");
 
   useEffect(() => {
