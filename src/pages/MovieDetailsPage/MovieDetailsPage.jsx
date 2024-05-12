@@ -1,18 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { lazy } from "react";
-import {
-  useParams,
-  useLocation,
-  Link,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
+import { useParams, useLocation, Link, Outlet } from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
 import css from "./MovieDetailsPage.module.css";
 
-const MyLazyComponent = lazy(() => import("./MyLazyComponent"));
 const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
 const MovieReviews = lazy(() =>
   import("../../components/MovieReviews/MovieReviews")
@@ -25,7 +17,6 @@ const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const location = useLocation();
   const backLink = useRef(location.state ?? "/");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -74,7 +65,7 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
-            <button onClick={() => navigate(-1)}>⬅ Go Back</button>
+            <Link to={backLink.current}>⬅ Go Back</Link>
           </div>
         </>
       )}
