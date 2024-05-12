@@ -23,6 +23,7 @@ const MovieDetailsPage = () => {
   const [isError, setIsError] = useState(false);
   const { movieId } = useParams();
   const location = useLocation();
+  const history = useHistory();
   const backLink = useRef(location.state ?? "/");
 
   useEffect(() => {
@@ -45,6 +46,10 @@ const MovieDetailsPage = () => {
 
     fetchMovieDetails();
   }, [movieId]);
+
+  const handleGoBack = () => {
+    history.goBack();
+  };
 
   return (
     <>
@@ -72,7 +77,7 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
-            <Link to={backLink.current}>⬅ Go Back</Link>
+            <button onClick={handleGoBack}>⬅ Go Back</button>
           </div>
         </>
       )}
