@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, useLocation, Link, Outlet } from "react-router-dom";
-import { useHistory } from "react-router-dom"; // Import useHistory directly
+import {
+  useParams,
+  useLocation,
+  Link,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
@@ -17,8 +22,8 @@ const MovieDetailsPage = () => {
   const [isError, setIsError] = useState(false);
   const { movieId } = useParams();
   const location = useLocation();
-  const history = useHistory(); // Use useHistory directly
   const backLink = useRef(location.state ?? "/");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -67,7 +72,7 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
-            <button onClick={history.goBack}>⬅ Go Back</button>
+            <button onClick={() => navigate(-1)}>⬅ Go Back</button>
           </div>
         </>
       )}
