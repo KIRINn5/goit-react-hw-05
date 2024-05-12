@@ -1,39 +1,34 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, Suspense, lazy, useRef } from "react";
 import {
   useParams,
   useLocation,
   Link,
+  Routes,
+  Route,
   Outlet,
-  useHistory,
 } from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
 import css from "./MovieDetailsPage.module.css";
-
 const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
 const MovieReviews = lazy(() =>
   import("../../components/MovieReviews/MovieReviews")
 );
-
 const MovieDetailsPage = () => {
   const [movieDetails, setMovieDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const { movieId } = useParams();
   const location = useLocation();
-  const history = useHistory();
   const backLink = useRef(location.state ?? "/");
-
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
         setIsError(false);
         setIsLoading(true);
-
         const apiKey = "54748db55a18c7d1785893914b659eb4";
         const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
-
         const response = await axios.get(url);
         setMovieDetails(response.data);
       } catch (error) {
@@ -42,10 +37,8 @@ const MovieDetailsPage = () => {
         setIsLoading(false);
       }
     };
-
     fetchMovieDetails();
   }, [movieId]);
-
   return (
     <>
       {movieDetails && (
@@ -72,7 +65,7 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
-            <button onClick={history.goBack}>⬅ Go Back</button>
+            <Link to={backLink.current}>⬅ Go Back</Link>
           </div>
         </>
       )}
@@ -81,5 +74,4 @@ const MovieDetailsPage = () => {
     </>
   );
 };
-
 export default MovieDetailsPage;
