@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, lazy, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   useParams,
   useLocation,
@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Outlet,
+  useHistory,
 } from "react-router-dom";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
@@ -47,10 +48,6 @@ const MovieDetailsPage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
-  const handleGoBack = () => {
-    history.goBack();
-  };
-
   return (
     <>
       {movieDetails && (
@@ -77,7 +74,7 @@ const MovieDetailsPage = () => {
             <Link to="cast">Cast</Link>
             <Link to="reviews">Reviews</Link>
             <Outlet />
-            <button onClick={handleGoBack}>⬅ Go Back</button>
+            <button onClick={history.goBack}>⬅ Go Back</button>
           </div>
         </>
       )}
