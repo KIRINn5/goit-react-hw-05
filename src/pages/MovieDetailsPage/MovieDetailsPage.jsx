@@ -3,7 +3,6 @@ import {
   useParams,
   useLocation,
   Link,
-  Routes,
   Outlet,
   useHistory,
 } from "react-router-dom";
