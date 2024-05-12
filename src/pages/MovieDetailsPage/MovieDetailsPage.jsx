@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { lazy } from "react";
 import {
   useParams,
   useLocation,
@@ -11,6 +12,7 @@ import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Loader/Loader";
 import css from "./MovieDetailsPage.module.css";
 
+const MyLazyComponent = lazy(() => import("./MyLazyComponent"));
 const MovieCast = lazy(() => import("../../components/MovieCast/MovieCast"));
 const MovieReviews = lazy(() =>
   import("../../components/MovieReviews/MovieReviews")
