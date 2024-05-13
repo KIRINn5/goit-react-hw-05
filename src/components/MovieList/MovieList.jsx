@@ -10,8 +10,8 @@ function MovieList({ movies }) {
             <Link
               to={{
                 pathname: `/movies/${movie.id}`,
-                state: location.state,
               }}
+              state={location}
             >
               {movie.title}
             </Link>
